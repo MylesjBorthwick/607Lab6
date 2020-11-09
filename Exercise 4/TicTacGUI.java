@@ -43,6 +43,7 @@ public class TicTacGUI {
             public void actionPerformed(ActionEvent ae) {
                 if(playerName == null){
                     playerName = username.getText();
+                    updateMessage("Player name entered: "+ playerName);
                     username.setEditable(false);
                 }
             }});
@@ -52,7 +53,7 @@ public class TicTacGUI {
         message.setEditable(false);
 
         JScrollPane jsp = new JScrollPane(message);
-        jsp.setBounds(245, 75, 225, 75);
+        jsp.setBounds(245, 75, 255, 75);
         
         b1.setBounds(50,50,50, 50);
         b2.setBounds(50,100,50, 50);

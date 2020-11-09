@@ -162,7 +162,9 @@ public class TicTacClient implements Constants{
 	 */
 	private void getName(){
 		while(userInterface.getPlayerName() == null){
+			name = userInterface.getPlayerName();
 		}
+		System.out.println("Name of this player: " +name);
 		name = userInterface.getPlayerName();
 	}
 	
