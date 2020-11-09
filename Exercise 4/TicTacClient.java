@@ -236,7 +236,7 @@ public class TicTacClient implements Constants{
         //If there is no mark, add mark
         else{
 			//add mark and display board
-			userInterface.setButtonText(button,Character.toString(mark));
+			userInterface.setButtonText(button, Character.toString(mark));
 			board.addMark(row, col, this.mark);
 			socketOut.println(row);
 			socketOut.println(col);	
