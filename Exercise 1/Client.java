@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
+	
 	private PrintWriter socketOut;
 	private Socket palinSocket;
 	private BufferedReader stdIn;
@@ -14,8 +15,7 @@ public class Client {
 		try {
 			palinSocket = new Socket(serverName, portNumber);
 			stdIn = new BufferedReader(new InputStreamReader(System.in));
-			socketIn = new BufferedReader(new InputStreamReader(
-					palinSocket.getInputStream()));
+			socketIn = new BufferedReader(new InputStreamReader(palinSocket.getInputStream()));
 			socketOut = new PrintWriter((palinSocket.getOutputStream()), true);
 		} catch (IOException e) {
 			System.err.println(e.getStackTrace());
