@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 public class TicTacGUI {
 
     private boolean canUpdate = false;
-    private int buttonPressed = 0;
+    private int buttonPressed = -1;
     private String playerName = null;
 
     private JButton b1=new JButton("");//creating instance of JButton  
