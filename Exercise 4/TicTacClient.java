@@ -3,6 +3,18 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
+import javax.naming.directory.InvalidAttributeValueException;
+
+/**
+ * This class operates the backend for the client, handling the user inputs,
+ * displayed messages, and error checking of inputs. This class will also display 
+ * the board for the client and manage the backend of the GUI. 
+ * 
+ * ENSF 607 Lab 6
+ * @author Myles Borthwick
+ * @author Ken Loughery
+ */
+
 public class TicTacClient implements Constants{
 
 	
@@ -10,22 +22,27 @@ public class TicTacClient implements Constants{
 	private Board board;
 	private char mark;
 	private PrintWriter socketOut;
-	private BufferedReader stdIn;
+	private Scanner scan;
 	private BufferedReader socketIn;
 	private String response; 
 	private Socket thisSocket;
+	private TicTacGUI userInterface;
+
 
 	/**
-	 * constructor that establishes a connection to the server and sets all the required communication channels
+	 * Constructor that receives the server information to create a new socket to establish a connection 
+	 * to the server
+	 * @param serverName the name of the server to connect to
+	 * @param portNumber the port number of the server to connect to
 	 */
 	public TicTacClient(String serverName, int portNumber) {
 		try {
 			thisSocket = new Socket(serverName, portNumber);
-			stdIn = new BufferedReader(new InputStreamReader(System.in));
+			scan = new Scanner(System.in);
 			socketIn = new BufferedReader(new InputStreamReader(thisSocket.getInputStream()));
 			socketOut = new PrintWriter((thisSocket.getOutputStream()), true);
 	        
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.err.println(e.getStackTrace());
 		}
 	}
@@ -33,7 +50,8 @@ public class TicTacClient implements Constants{
 
 	/**
 	 * method that communicates to the server to update the client's copy of the board, receiving the location, and 
-	 * character of the other player's mark and placing it on the board. 
+	 * character of the other player's mark and placing it on the board. This method will also display the board for
+	 * the client, and print out any waiting messages
 	 */
 	
 	private void updateBoard() {
@@ -83,29 +101,37 @@ public class TicTacClient implements Constants{
 		System.out.println(this.response );
 		try {
 			response = socketIn.readLine();
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			System.out.println("Error receiving the mark character.");
 		}
 		this.mark = response.charAt(0);
 		
 
 		System.out.print("\nPlease enter the name of the " + this.mark +" player: ");
-		try {
-			this.name = stdIn.readLine();
-			while (this.name == null) {
-				System.out.print("Please try again: ");
-				name = stdIn.readLine();
-			}
-		} catch (IOException e1) {
-			System.err.println(e1.getStackTrace());
-		}
+		getName();
+		
 		board.display();
 	}
 	
-	
+
+	/**
+	 * method that will get the client's name, calling itself recursively if presented with bad input
+	 */
+	private void getName(){
+		try {
+			this.name = scan.nextLine();
+			System.out.print("Please try again: ");
+			if(name == null){
+				throw new InvalidAttributeValueException();
+			}
+		} catch (Exception e) {
+			System.out.print("Please try again: ");
+			getName();
+		}	
+	}
 	
 	/**
-	 * method that operates the game from the client side, waiting for turns 
+	 * method that will run the game for the client, awaiting turns from each player
 	 */
 	public void playGame()  {
 		this.response  = null;
@@ -135,12 +161,10 @@ public class TicTacClient implements Constants{
 				updateBoard();
 				
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				System.out.println("Sending error: " + e.getMessage());
 			}
 		}
-
-
 	}
 
 	
@@ -153,7 +177,6 @@ public class TicTacClient implements Constants{
 	private void makeMove(){
 		//Initialize scanner
 		int row = 0, col = 0;
-		Scanner scan = new Scanner(System.in);
 		try{
 			//Row prompt + input
 			System.out.println(this.name+ " please enter row number for your move: ");
@@ -204,11 +227,11 @@ public class TicTacClient implements Constants{
 	 */
 	public void disconnect() {
 		try {
-			stdIn.close();
+			scan.close();
 			socketIn.close();
 			socketOut.close();
 			thisSocket.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.out.println("Closing error: " + e.getMessage());
 		}
 		
