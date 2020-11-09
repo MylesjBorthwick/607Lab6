@@ -55,7 +55,7 @@ public class TicTacGUI {
         b8.setBounds(150,100,50, 50);
         b9.setBounds(150,150,50, 50);
         addButtonListeners();
-
+        
         f.add(b1);//adding button in JFrame  
         f.add(b2);
         f.add(b3);
@@ -75,6 +75,28 @@ public class TicTacGUI {
         f.setLayout(null);//using no layout managers  
         f.setVisible(true);//making the frame visible
     }
+
+    public void setButtonText(int button, String text){
+        if(button == 1){
+            b1.setText(text);
+        }else if(button == 2){
+            b2.setText(text);
+        }else if(button ==3){
+            b3.setText(text);
+        }else if(button ==4){
+            b4.setText(text);
+        }else if(button ==5){
+            b5.setText(text);
+        }else if(button ==6){
+            b6.setText(text);
+        }else if(button ==7){
+            b7.setText(text);
+        }else if(button ==8){
+            b8.setText(text);
+        }else if(button ==9){
+            b9.setText(text);
+        }
+    }
     
     public void setCanUpdate(boolean set){
         canUpdate = set;
@@ -93,46 +115,55 @@ public class TicTacGUI {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 1;}
+                else{updateMessage("Please wait until your turn to update the board");}
             }});
         b2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 2;}
+                else{updateMessage("Please wait until your turn to update the board");}
             } });
         b3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 3;}
+                else{updateMessage("Please wait until your turn to update the board");}
             } });
         b4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 4;}
+                else{updateMessage("Please wait until your turn to update the board");}
             } });
         b5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 5;}
+                else{updateMessage("Please wait until your turn to update the board");}
             } });
         b6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 6;}
+                else{updateMessage("Please wait until your turn to update the board");}
             } });
         b7.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 7;}
+                else{updateMessage("Please wait until your turn to update the board");}
             } });
         b8.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 8;}
+                else{updateMessage("Please wait until your turn to update the board");}
             } });
         b9.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 if(canUpdate){  buttonPressed = 9;}
+                else{updateMessage("Please wait until your turn to update the board");}
             } });
     }
 

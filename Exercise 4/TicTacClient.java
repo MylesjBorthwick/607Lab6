@@ -27,7 +27,7 @@ public class TicTacClient implements Constants{
 	private String response; 
 	private Socket thisSocket;
 	private TicTacGUI userInterface;
-	private int buttonCordinates [] [];
+	private int buttonCoordinates [] [];
 
 	/**
 	 * Constructor that receives the server information to create a new socket to establish a connection 
@@ -41,47 +41,56 @@ public class TicTacClient implements Constants{
 			scan = new Scanner(System.in);
 			socketIn = new BufferedReader(new InputStreamReader(thisSocket.getInputStream()));
 			socketOut = new PrintWriter((thisSocket.getOutputStream()), true);
-			buttonCordinates = new int [9][2];
-			populateButtonCordinates();
+			buttonCoordinates = new int [9][2];
+			populateButtonCoordinates();
 	        
 		} catch (Exception e) {
 			System.err.println(e.getStackTrace());
 		}
 	}
 
+	private int buttonCoordinateLookup(int row, int col){
+		int lookup;
+		for(lookup = 0 ; lookup < 9;lookup++){
+			if(buttonCoordinates[lookup][0] == row && buttonCoordinates[lookup][1] == col){
+				return lookup +1;
+			}
+		}
+		return -1;
+	}
 
 
-	private void populateButtonCordinates(){
+	private void populateButtonCoordinates(){
 		try{	
-			buttonCordinates[0][0] = 0;
-			buttonCordinates[0][1] = 0;
+			buttonCoordinates[0][0] = 0;
+			buttonCoordinates[0][1] = 0;
 
-			buttonCordinates[1][0] = 1;
-			buttonCordinates[1][1] = 0;	
+			buttonCoordinates[1][0] = 1;
+			buttonCoordinates[1][1] = 0;	
 
-			buttonCordinates[2][0] = 2;
-			buttonCordinates[2][1] = 0;
+			buttonCoordinates[2][0] = 2;
+			buttonCoordinates[2][1] = 0;
 
-			buttonCordinates[3][0] = 0;
-			buttonCordinates[3][1] = 1;	
+			buttonCoordinates[3][0] = 0;
+			buttonCoordinates[3][1] = 1;	
 
-			buttonCordinates[4][0] = 1;
-			buttonCordinates[4][1] = 1;
+			buttonCoordinates[4][0] = 1;
+			buttonCoordinates[4][1] = 1;
 
-			buttonCordinates[5][0] = 2;
-			buttonCordinates[5][1] = 2;	
+			buttonCoordinates[5][0] = 2;
+			buttonCoordinates[5][1] = 2;	
 
-			buttonCordinates[6][0] = 0;
-			buttonCordinates[6][1] = 2;	
+			buttonCoordinates[6][0] = 0;
+			buttonCoordinates[6][1] = 2;	
 
-			buttonCordinates[7][0] = 1;
-			buttonCordinates[7][1] = 2;
+			buttonCoordinates[7][0] = 1;
+			buttonCoordinates[7][1] = 2;
 
-			buttonCordinates[8][0] = 2;
-			buttonCordinates[8][1] = 2;
+			buttonCoordinates[8][0] = 2;
+			buttonCoordinates[8][1] = 2;
 			
 		}catch(Exception e){
-			System.out.println("Could not cordinate buttons");
+			userInterface.updateMessage("Could not coordinate buttons");
 		}
 	}
 
@@ -97,13 +106,13 @@ public class TicTacClient implements Constants{
        this.response = null;
 		try {
 			if(!board.isFull() && !board.xWins() && !board.oWins()) {
-				System.out.println("Waiting for opponent to make their move...");
+				userInterface.updateMessage("Waiting for opponent to make their move...");
 			}
 			this.response  = socketIn.readLine();
 
 
 			if(this.response .contains("THE GAME IS OVER: ")) {
-				System.out.println(this.response );
+				userInterface.updateMessage(this.response );
 				return;
 			}
 			try{
@@ -111,19 +120,22 @@ public class TicTacClient implements Constants{
 				this.response  = socketIn.readLine();
 				int col = Integer.parseInt(this.response );	
 				this.response  = socketIn.readLine();
-				char mar = this.response .charAt(0);
+				char opposingMark = this.response .charAt(0);
 	
-				board.addMark(row, col, mar);
+				userInterface.updateMessage("Updated Opponent's move.");
+				board.addMark(row, col, opposingMark);
+				userInterface.setButtonText(buttonCoordinateLookup(row, col),Character.toString(opposingMark));
+
 			}catch(Exception e){
-				System.err.println("Error updating board: bad input.");
+				userInterface.updateMessage("Error updating board: bad input.");
 			}
 
 
 		} catch (Exception e) {
-			System.err.println("Error updating board: connection issue. ");
+			userInterface.updateMessage("Error updating board: connection issue. ");
 		}
 
-        board.display();
+        //board.display();
 		
 		
 		
@@ -140,15 +152,15 @@ public class TicTacClient implements Constants{
 		try {
 			response = socketIn.readLine();
 		} catch (Exception e1) {
-			System.out.println("Error receiving the mark character.");
+			userInterface.updateMessage("Error receiving the mark character.");
 		}
 		this.mark = response.charAt(0);
 		this.userInterface.updateMark(this.mark);
 
-		System.out.print("\nPlease enter the name of the " + this.mark +" player: ");
+		userInterface.updateMessage("\nPlease enter the name of the " + this.mark +" player: ");
 		getName();
 		
-		board.display();
+		//board.display();
 	}
 	
 
@@ -168,7 +180,7 @@ public class TicTacClient implements Constants{
 		socketOut.println(this.name);
 
 		if(this.mark == LETTER_X) {
-			System.out.println("Waiting for opponent to connect");
+			userInterface.updateMessage("Waiting for opponent to connect");
 		}
 		else {
 			updateBoard();
@@ -180,7 +192,7 @@ public class TicTacClient implements Constants{
 					return;
 				}	
 				response = socketIn.readLine();
-				System.out.println(response);
+				userInterface.updateMessage(response);
 				if(response.contains("THE GAME IS OVER: ")) {
 					return;
 				}
@@ -191,7 +203,7 @@ public class TicTacClient implements Constants{
 				
 				
 			} catch (Exception e) {
-				System.out.println("Sending error: " + e.getMessage());
+				userInterface.updateMessage("Sending error: " + e.getMessage());
 			}
 		}
 	}
@@ -207,23 +219,23 @@ public class TicTacClient implements Constants{
 		//Initialize scanner
 		userInterface.setButtonPressed(-1);
 		userInterface.setCanUpdate(true);
-		System.out.println(this.name+ " please press a button for your next move: ");
+		userInterface.updateMessage(this.name+ " please press a button for your next move: ");
 
-		while(userInterface.getButtonPressed() == -1 || userInterface.getButtonPressed() >= 9){
+		while(userInterface.getButtonPressed() == -1 || userInterface.getButtonPressed() > 9){
 		}
 		int button = userInterface.getButtonPressed();
-		int row = buttonCordinates[button][0];
-		int col = buttonCordinates[button][1];
+		int row = buttonCoordinates[button-1][0];
+		int col = buttonCoordinates[button-1][1];
         //Check for existing marks 
         if(board.getMark(row, col)!=' '){
-            System.out.println("Please pick an empty space");
+            userInterface.updateMessage("Please pick an empty space");
             makeMove();
         }
         //If there is no mark, add mark
         else{
 			//add mark and display board
+			userInterface.setButtonText(button,Character.toString(mark));
 			board.addMark(row, col, this.mark);
-			board.display();
 			socketOut.println(row);
 			socketOut.println(col);	
 		}	
@@ -240,7 +252,7 @@ public class TicTacClient implements Constants{
 			socketOut.close();
 			thisSocket.close();
 		} catch (Exception e) {
-			System.out.println("Closing error: " + e.getMessage());
+			userInterface.updateMessage("Closing error: " + e.getMessage());
 		}
 		
 	}
