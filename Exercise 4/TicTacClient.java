@@ -172,6 +172,7 @@ public class TicTacClient implements Constants{
 	public void playGame()  {
 		this.response  = null;
 		setupGame();
+		System.out.println("Name of this player: " +name);
 		socketOut.println(this.name);
 
 		if(this.mark == LETTER_X) {
