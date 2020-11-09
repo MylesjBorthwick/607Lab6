@@ -1,9 +1,6 @@
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
-
-import javax.naming.directory.InvalidAttributeValueException;
 
 /**
  * This class operates the backend for the client, handling the user inputs,
@@ -22,7 +19,6 @@ public class TicTacClient implements Constants{
 	private Board board;
 	private char mark;
 	private PrintWriter socketOut;
-	private Scanner scan;
 	private BufferedReader socketIn;
 	private String response; 
 	private Socket thisSocket;
@@ -38,7 +34,6 @@ public class TicTacClient implements Constants{
 	public TicTacClient(String serverName, int portNumber) {
 		try {
 			thisSocket = new Socket(serverName, portNumber);
-			scan = new Scanner(System.in);
 			socketIn = new BufferedReader(new InputStreamReader(thisSocket.getInputStream()));
 			socketOut = new PrintWriter((thisSocket.getOutputStream()), true);
 			buttonCoordinates = new int [9][2];
@@ -136,8 +131,6 @@ public class TicTacClient implements Constants{
 		}
 
         //board.display();
-		
-		
 		
 	}
 	
@@ -249,7 +242,6 @@ public class TicTacClient implements Constants{
 	 */
 	public void disconnect() {
 		try {
-			scan.close();
 			socketIn.close();
 			socketOut.close();
 			thisSocket.close();
