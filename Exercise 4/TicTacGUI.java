@@ -4,26 +4,31 @@ import java.awt.event.ActionListener;
 
 public class TicTacGUI {
 
-    private boolean canUpdate;
-    JFrame f=new JFrame("Tic-Tac-Toe");
-    JTextField username = new JTextField(20);
-    JButton b1=new JButton("");//creating instance of JButton  
-    JButton b2=new JButton("");
-    JButton b3=new JButton("");
-    JButton b4=new JButton("");
-    JButton b5=new JButton("");
-    JButton b6=new JButton("");
-    JButton b7=new JButton("");
-    JButton b8=new JButton("");
-    JButton b9=new JButton("");
+    private boolean canUpdate = false;
+    private int buttonPressed = 0;
+    private String playerName = null;
 
-    JLabel character = new JLabel("Player:");
-    JLabel name = new JLabel("Username:");
-    JLabel status = new JLabel("Game Status");
+    private JButton b1=new JButton("");//creating instance of JButton  
+    private JButton b2=new JButton("");
+    private JButton b3=new JButton("");
+    private JButton b4=new JButton("");
+    private JButton b5=new JButton("");
+    private JButton b6=new JButton("");
+    private JButton b7=new JButton("");
+    private JButton b8=new JButton("");
+    private JButton b9=new JButton("");
+
+    private JFrame f=new JFrame("Tic-Tac-Toe");
+    private JTextField username = new JTextField(20);
+
+
+    private JLabel character = new JLabel("Player:");
+    private JLabel name = new JLabel("Username:");
+    private JLabel status = new JLabel("Game Status");
 
    //creating instance of JFrame
-    JTextArea message = new JTextArea();
-    JTextField symbol = new JTextField(2);
+   private JTextArea message = new JTextArea();
+   private JTextField symbol = new JTextField(2);
 
 
     public TicTacGUI(){
@@ -49,6 +54,7 @@ public class TicTacGUI {
         b7.setBounds(150,50,50, 50);
         b8.setBounds(150,100,50, 50);
         b9.setBounds(150,150,50, 50);
+        addButtonListeners();
 
         f.add(b1);//adding button in JFrame  
         f.add(b2);
@@ -70,6 +76,75 @@ public class TicTacGUI {
         f.setVisible(true);//making the frame visible
     }
     
+    public void setCanUpdate(boolean set){
+        canUpdate = set;
+    }
+
+    public void setButtonPressed(int number){
+        buttonPressed = number;
+    }
+
+    public int getButtonPressed(){
+        return buttonPressed;
+    }
+
+    private void addButtonListeners(){
+        b1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 1;}
+            }});
+        b2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 2;}
+            } });
+        b3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 3;}
+            } });
+        b4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 4;}
+            } });
+        b5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 5;}
+            } });
+        b6.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 6;}
+            } });
+        b7.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 7;}
+            } });
+        b8.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 8;}
+            } });
+        b9.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(canUpdate){  buttonPressed = 9;}
+            } });
+    }
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {  
         JFrame f=new JFrame("Tic-Tac-Toe");//creating instance of JFrame  
 

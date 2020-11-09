@@ -96,6 +96,8 @@ public class TicTacClient implements Constants{
 	 * mark, and sets a new board
 	 */
 	private void setupGame() {
+		userInterface = new TicTacGUI();
+		
 		this.response  = "Message: WELCOME TO THE GAME. ";
 		board = new Board();
 		System.out.println(this.response );
