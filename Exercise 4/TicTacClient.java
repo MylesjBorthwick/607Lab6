@@ -97,17 +97,15 @@ public class TicTacClient implements Constants{
 	 */
 	private void setupGame() {
 		userInterface = new TicTacGUI();
-		
-		this.response  = "Message: WELCOME TO THE GAME. ";
+		this.userInterface.updateMessage("WELCOME TO THE GAME!");
 		board = new Board();
-		System.out.println(this.response );
 		try {
 			response = socketIn.readLine();
 		} catch (Exception e1) {
 			System.out.println("Error receiving the mark character.");
 		}
 		this.mark = response.charAt(0);
-		
+		this.userInterface.updateMark(this.mark);
 
 		System.out.print("\nPlease enter the name of the " + this.mark +" player: ");
 		getName();
@@ -120,16 +118,7 @@ public class TicTacClient implements Constants{
 	 * method that will get the client's name, calling itself recursively if presented with bad input
 	 */
 	private void getName(){
-		try {
-			this.name = scan.nextLine();
-			System.out.print("Please try again: ");
-			if(name == null){
-				throw new InvalidAttributeValueException();
-			}
-		} catch (Exception e) {
-			System.out.print("Please try again: ");
-			getName();
-		}	
+		
 	}
 	
 	/**
@@ -221,8 +210,6 @@ public class TicTacClient implements Constants{
         }
 
 	}
-	
-	
 	
 	/**
 	 * closes all connections

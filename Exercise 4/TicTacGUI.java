@@ -136,11 +136,13 @@ public class TicTacGUI {
             } });
     }
 
+    public void updateMessage(String input){
+        this.message.setText(input);
+    }
 
-
-
-
-
+    public void updateMark(char in){
+        this.symbol.setText(Character.toString(in));
+    }
 
 
 
