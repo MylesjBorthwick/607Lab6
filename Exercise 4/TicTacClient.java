@@ -1,33 +1,35 @@
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class operates the backend for the client, handling the user inputs,
- * displayed messages, and error checking of inputs. This class will also display 
- * the board for the client and manage the backend of the GUI. 
+ * displayed messages, and error checking of inputs. This class will also
+ * display the board for the client and manage the backend of the GUI.
  * 
  * ENSF 607 Lab 6
+ * 
  * @author Myles Borthwick
  * @author Ken Loughery
  */
 
-public class TicTacClient implements Constants{
+public class TicTacClient implements Constants {
 
-	
 	private String name = null;
 	private Board board;
 	private char mark;
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
-	private String response; 
+	private String response;
 	private Socket thisSocket;
 	private TicTacGUI userInterface;
-	private int buttonCoordinates [] [];
+	private int buttonCoordinates[][];
 
 	/**
-	 * Constructor that receives the server information to create a new socket to establish a connection 
-	 * to the server
+	 * Constructor that receives the server information to create a new socket to
+	 * establish a connection to the server
+	 * 
 	 * @param serverName the name of the server to connect to
 	 * @param portNumber the port number of the server to connect to
 	 */
@@ -36,107 +38,104 @@ public class TicTacClient implements Constants{
 			thisSocket = new Socket(serverName, portNumber);
 			socketIn = new BufferedReader(new InputStreamReader(thisSocket.getInputStream()));
 			socketOut = new PrintWriter((thisSocket.getOutputStream()), true);
-			buttonCoordinates = new int [9][2];
+			buttonCoordinates = new int[9][2];
 			populateButtonCoordinates();
-	        
+
 		} catch (Exception e) {
 			System.err.println(e.getStackTrace());
 		}
 	}
 
-	private int buttonCoordinateLookup(int row, int col){
+	private int buttonCoordinateLookup(int row, int col) {
 		int lookup;
-		for(lookup = 0 ; lookup < 9;lookup++){
-			if(buttonCoordinates[lookup][0] == row && buttonCoordinates[lookup][1] == col){
-				return lookup +1;
+		for (lookup = 0; lookup < 9; lookup++) {
+			if (buttonCoordinates[lookup][0] == row && buttonCoordinates[lookup][1] == col) {
+				return lookup + 1;
 			}
 		}
 		return -1;
 	}
 
-
-	private void populateButtonCoordinates(){
-		try{	
+	private void populateButtonCoordinates() {
+		try {
 			buttonCoordinates[0][0] = 0;
 			buttonCoordinates[0][1] = 0;
 
 			buttonCoordinates[1][0] = 1;
-			buttonCoordinates[1][1] = 0;	
+			buttonCoordinates[1][1] = 0;
 
 			buttonCoordinates[2][0] = 2;
 			buttonCoordinates[2][1] = 0;
 
 			buttonCoordinates[3][0] = 0;
-			buttonCoordinates[3][1] = 1;	
+			buttonCoordinates[3][1] = 1;
 
 			buttonCoordinates[4][0] = 1;
 			buttonCoordinates[4][1] = 1;
 
 			buttonCoordinates[5][0] = 2;
-			buttonCoordinates[5][1] = 2;	
+			buttonCoordinates[5][1] = 2;
 
 			buttonCoordinates[6][0] = 0;
-			buttonCoordinates[6][1] = 2;	
+			buttonCoordinates[6][1] = 2;
 
 			buttonCoordinates[7][0] = 1;
 			buttonCoordinates[7][1] = 2;
 
 			buttonCoordinates[8][0] = 2;
 			buttonCoordinates[8][1] = 2;
-			
-		}catch(Exception e){
+
+		} catch (Exception e) {
 			userInterface.updateMessage("Could not coordinate buttons");
 		}
 	}
 
-
 	/**
-	 * method that communicates to the server to update the client's copy of the board, receiving the location, and 
-	 * character of the other player's mark and placing it on the board. This method will also display the board for
-	 * the client, and print out any waiting messages
+	 * method that communicates to the server to update the client's copy of the
+	 * board, receiving the location, and character of the other player's mark and
+	 * placing it on the board. This method will also display the board for the
+	 * client, and print out any waiting messages
 	 */
-	
+
 	private void updateBoard() {
 
-       this.response = null;
+		this.response = null;
 		try {
-			if(!board.isFull() && !board.xWins() && !board.oWins()) {
+			if (!board.isFull() && !board.xWins() && !board.oWins()) {
 				userInterface.updateMessage("Waiting for opponent to make their move...");
 			}
-			this.response  = socketIn.readLine();
+			this.response = socketIn.readLine();
 
-
-			if(this.response .contains("THE GAME IS OVER: ")) {
-				userInterface.updateMessage(this.response );
+			if (this.response.contains("THE GAME IS OVER: ")) {
+				userInterface.updateMessage(this.response);
 				return;
 			}
-			try{
-				int row = Integer.parseInt(this.response );
-				this.response  = socketIn.readLine();
-				int col = Integer.parseInt(this.response );	
-				this.response  = socketIn.readLine();
-				char opposingMark = this.response .charAt(0);
-	
+			try {
+				int row = Integer.parseInt(this.response);
+				this.response = socketIn.readLine();
+				int col = Integer.parseInt(this.response);
+				this.response = socketIn.readLine();
+				char opposingMark = this.response.charAt(0);
+
 				userInterface.updateMessage("Updated Opponent's move.");
 				board.addMark(row, col, opposingMark);
-				userInterface.setButtonText(buttonCoordinateLookup(row, col),Character.toString(opposingMark));
+				userInterface.setButtonText(buttonCoordinateLookup(row, col), Character.toString(opposingMark));
 
-			}catch(Exception e){
+			} catch (Exception e) {
 				userInterface.updateMessage("Error updating board: bad input.");
 			}
-
 
 		} catch (Exception e) {
 			userInterface.updateMessage("Error updating board: connection issue. ");
 		}
 
-        //board.display();
-		
+		// board.display();
+
 	}
-	
+
 	/**
-	 * method that communicates with the server and user to establish the client's name,
-	 * mark, and sets a new board
+	 * method that communicates with the server and user to establish the client's
+	 * name, mark, and sets a new board
 	 */
 	private void setupGame() {
 		userInterface = new TicTacGUI();
@@ -150,21 +149,25 @@ public class TicTacClient implements Constants{
 		this.mark = response.charAt(0);
 		this.userInterface.updateMark(this.mark);
 
-		userInterface.updateMessage("\nPlease enter the name of the " + this.mark +" player: ");
+		userInterface.updateMessage("\nPlease enter the name of the " + this.mark + " player: ");
 		getName();
-		
-		//board.display();
+
+		// board.display();
 	}
-	
 
 	/**
-	 * method that will get the client's name, calling itself recursively if presented with bad input
+	 * method that will get the client's name, calling itself recursively if
+	 * presented with bad input
 	 */
-	private void getName(){
-		while(userInterface.getPlayerName() == null){
+	private void getName() {
+		while (userInterface.getPlayerName() == null) {
 			name = userInterface.getPlayerName();
+			try {
+				TimeUnit.MILLISECONDS.sleep(10);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		System.out.println("Name of this player: " +name);
 		name = userInterface.getPlayerName();
 	}
 	
@@ -174,7 +177,7 @@ public class TicTacClient implements Constants{
 	public void playGame()  {
 		this.response  = null;
 		setupGame();
-		System.out.println("Name of this player: " +name);
+
 		socketOut.println(this.name);
 
 		if(this.mark == LETTER_X) {
@@ -218,10 +221,18 @@ public class TicTacClient implements Constants{
 		userInterface.setButtonPressed(-1);
 		userInterface.setCanUpdate(true);
 		userInterface.updateMessage(this.name+ " please press a button for your next move: ");
-
-		while(userInterface.getButtonPressed() == -1 || userInterface.getButtonPressed() > 9){
+		int button =0;
+		while(userInterface.getButtonPressed() <0 || userInterface.getButtonPressed() > 9){
+			try {
+				TimeUnit.MILLISECONDS.sleep(10);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			button = userInterface.getButtonPressed();
 		}
-		int button = userInterface.getButtonPressed();
+
+
+		button = userInterface.getButtonPressed();
 		int row = buttonCoordinates[button-1][0];
 		int col = buttonCoordinates[button-1][1];
         //Check for existing marks 
