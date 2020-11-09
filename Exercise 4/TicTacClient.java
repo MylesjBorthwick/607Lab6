@@ -74,7 +74,7 @@ public class TicTacClient implements Constants {
 			buttonCoordinates[4][1] = 1;
 
 			buttonCoordinates[5][0] = 2;
-			buttonCoordinates[5][1] = 2;
+			buttonCoordinates[5][1] = 1;
 
 			buttonCoordinates[6][0] = 0;
 			buttonCoordinates[6][1] = 2;
