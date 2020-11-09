@@ -37,7 +37,16 @@ public class TicTacGUI {
         character.setBounds(50, 225, 100, 50);
         name.setBounds(50, 265, 100, 50);
         username.setBounds(125, 280, 100, 25);
-       
+        username.setEditable(true);
+        username.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                if(playerName == null){
+                    playerName = username.getText();
+                    username.setEditable(false);
+                }
+            }});
+
         symbol.setBounds(110, 240, 25, 25);
         symbol.setEditable(false);
         
@@ -74,6 +83,7 @@ public class TicTacGUI {
         f.setSize(500,400);//400 width and 500 height  
         f.setLayout(null);//using no layout managers  
         f.setVisible(true);//making the frame visible
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void setButtonText(int button, String text){
@@ -108,6 +118,11 @@ public class TicTacGUI {
 
     public int getButtonPressed(){
         return buttonPressed;
+    }
+
+
+    public String getPlayerName(){
+        return playerName;
     }
 
     private void addButtonListeners(){

@@ -168,7 +168,9 @@ public class TicTacClient implements Constants{
 	 * method that will get the client's name, calling itself recursively if presented with bad input
 	 */
 	private void getName(){
-		
+		while(userInterface.getPlayerName() == null){
+		}
+		name = userInterface.getPlayerName();
 	}
 	
 	/**
