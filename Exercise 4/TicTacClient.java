@@ -27,7 +27,7 @@ public class TicTacClient implements Constants{
 	private String response; 
 	private Socket thisSocket;
 	private TicTacGUI userInterface;
-
+	private int buttonCordinates [] [];
 
 	/**
 	 * Constructor that receives the server information to create a new socket to establish a connection 
@@ -41,9 +41,47 @@ public class TicTacClient implements Constants{
 			scan = new Scanner(System.in);
 			socketIn = new BufferedReader(new InputStreamReader(thisSocket.getInputStream()));
 			socketOut = new PrintWriter((thisSocket.getOutputStream()), true);
+			buttonCordinates = new int [9][2];
+			populateButtonCordinates();
 	        
 		} catch (Exception e) {
 			System.err.println(e.getStackTrace());
+		}
+	}
+
+
+
+	private void populateButtonCordinates(){
+		try{	
+			buttonCordinates[0][0] = 0;
+			buttonCordinates[0][1] = 0;
+
+			buttonCordinates[1][0] = 1;
+			buttonCordinates[1][1] = 0;	
+
+			buttonCordinates[2][0] = 2;
+			buttonCordinates[2][1] = 0;
+
+			buttonCordinates[3][0] = 0;
+			buttonCordinates[3][1] = 1;	
+
+			buttonCordinates[4][0] = 1;
+			buttonCordinates[4][1] = 1;
+
+			buttonCordinates[5][0] = 2;
+			buttonCordinates[5][1] = 2;	
+
+			buttonCordinates[6][0] = 0;
+			buttonCordinates[6][1] = 2;	
+
+			buttonCordinates[7][0] = 1;
+			buttonCordinates[7][1] = 2;
+
+			buttonCordinates[8][0] = 2;
+			buttonCordinates[8][1] = 2;
+			
+		}catch(Exception e){
+			System.out.println("Could not cordinate buttons");
 		}
 	}
 
@@ -167,34 +205,15 @@ public class TicTacClient implements Constants{
 	 */
 	private void makeMove(){
 		//Initialize scanner
-		int row = 0, col = 0;
-		try{
-			//Row prompt + input
-			System.out.println(this.name+ " please enter row number for your move: ");
-			row = scan.nextInt();
-			//Check for valid row input
-			if(row<0 || row>2){
-				throw new NumberFormatException("Number is out of scope");
-			}
-		}catch(Exception e){
-			System.out.println("Please enter integer 0,1 or 2");
-			makeMove();
-			return;
-		}
+		userInterface.setButtonPressed(-1);
+		userInterface.setCanUpdate(true);
+		System.out.println(this.name+ " please press a button for your next move: ");
 
-		try{
-        	//Column prompt + input
-			System.out.println(this.name+ " please enter column number for your move: ");
-			col = scan.nextInt();
-			//Check for valid row input
-			if(col<0 || col>2){
-				throw new NumberFormatException("Number is out of scope");
-			}
-		}catch(Exception e){
-			System.out.println("Please enter integer 0,1 or 2");
-			makeMove();
-			return;
+		while(userInterface.getButtonPressed() == -1 || userInterface.getButtonPressed() >= 9){
 		}
+		int button = userInterface.getButtonPressed();
+		int row = buttonCordinates[button][0];
+		int col = buttonCordinates[button][1];
         //Check for existing marks 
         if(board.getMark(row, col)!=' '){
             System.out.println("Please pick an empty space");
@@ -207,8 +226,8 @@ public class TicTacClient implements Constants{
 			board.display();
 			socketOut.println(row);
 			socketOut.println(col);	
-        }
-
+		}	
+		userInterface.setCanUpdate(false);
 	}
 	
 	/**
