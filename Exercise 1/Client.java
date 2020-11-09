@@ -3,7 +3,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-
+/**
+ * Client class given in assignment
+ * @author Dr. Moshirpour
+ */
 public class Client {
 	
 	private PrintWriter socketOut;
