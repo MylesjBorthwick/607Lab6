@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TicTacClient implements Constants {
 
+	//TicTacClient Member variables
 	private String name = null;
 	private Board board;
 	private char mark;
@@ -45,7 +46,12 @@ public class TicTacClient implements Constants {
 			System.err.println(e.getStackTrace());
 		}
 	}
-
+	/**
+	 * 
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	private int buttonCoordinateLookup(int row, int col) {
 		int lookup;
 		for (lookup = 0; lookup < 9; lookup++) {
@@ -55,7 +61,9 @@ public class TicTacClient implements Constants {
 		}
 		return -1;
 	}
-
+	/**
+	 * 
+	 */
 	private void populateButtonCoordinates() {
 		try {
 			buttonCoordinates[0][0] = 0;
@@ -96,7 +104,6 @@ public class TicTacClient implements Constants {
 	 * placing it on the board. This method will also display the board for the
 	 * client, and print out any waiting messages
 	 */
-
 	private void updateBoard() {
 
 		this.response = null;
@@ -128,8 +135,6 @@ public class TicTacClient implements Constants {
 		} catch (Exception e) {
 			userInterface.updateMessage("Error updating board: connection issue. ");
 		}
-
-		// board.display();
 
 	}
 
@@ -264,7 +269,6 @@ public class TicTacClient implements Constants {
 		}
 		
 	}
-	
 	
 	/**
 	 * main function to run the client

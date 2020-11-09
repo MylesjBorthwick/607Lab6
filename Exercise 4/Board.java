@@ -1,4 +1,3 @@
-
 /**
  * Board class creates board display, defines winning conditions
  * and adds marks to board

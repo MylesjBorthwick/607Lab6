@@ -2,13 +2,24 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class creates the GUI layout and populates
+ * with GUI components used for the tictactoe program.
+ * Action handling for buttons and textfields can be found here.
+ * 
+ * ENSF 607 Lab 6
+ * @author Myles Borthwick
+ * @author Ken Loughery
+ */
+
 public class TicTacGUI {
 
     private boolean canUpdate = false;
     private int buttonPressed = -1;
     private String playerName = null;
-
-    private JButton b1=new JButton("");//creating instance of JButton  
+    
+    //Create new 9 new buttons
+    private JButton b1=new JButton("");
     private JButton b2=new JButton("");
     private JButton b3=new JButton("");
     private JButton b4=new JButton("");
@@ -18,26 +29,31 @@ public class TicTacGUI {
     private JButton b8=new JButton("");
     private JButton b9=new JButton("");
 
+    //Create GUI frame and add app title
     private JFrame f=new JFrame("Tic-Tac-Toe");
+
+    //Create labels and textfield components
     private JTextField username = new JTextField(20);
-
-
     private JLabel character = new JLabel("Player:");
     private JLabel name = new JLabel("Username:");
     private JLabel status = new JLabel("Game Status");
+    private JTextArea message = new JTextArea();
+    private JTextField symbol = new JTextField(2);
 
-   //creating instance of JFrame
-   private JTextArea message = new JTextArea();
-   private JTextField symbol = new JTextField(2);
-
-
+    /**
+     * GUI constructor. Sets layout of components and adds components
+     * to JFrame
+     */
     public TicTacGUI(){
-         
+        
+        //Position labels/text and handle settings
         status.setBounds(275, 50, 100, 25);
         character.setBounds(50, 225, 100, 50);
         name.setBounds(50, 265, 100, 50);
         username.setBounds(125, 280, 100, 25);
         username.setEditable(true);
+
+        //Listener for name input
         username.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -55,6 +71,7 @@ public class TicTacGUI {
         JScrollPane jsp = new JScrollPane(message);
         jsp.setBounds(230, 75, 275, 75);
         
+        //Position Buttons in JFrame
         b1.setBounds(50,50,50, 50);
         b2.setBounds(50,100,50, 50);
         b3.setBounds(50,150,50, 50);
@@ -66,7 +83,8 @@ public class TicTacGUI {
         b9.setBounds(150,150,50, 50);
         addButtonListeners();
         
-        f.add(b1);//adding button in JFrame  
+        //Add all elements to jframe
+        f.add(b1); 
         f.add(b2);
         f.add(b3);
         f.add(b4);
@@ -81,12 +99,18 @@ public class TicTacGUI {
         f.add(username);
         f.add(status);
         f.add(jsp);
-        f.setSize(500,400);//400 width and 500 height  
-        f.setLayout(null);//using no layout managers  
-        f.setVisible(true);//making the frame visible
+
+        //Handle settings for JFrame
+        f.setSize(500,400);  
+        f.setLayout(null);
+        f.setVisible(true);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
-
+    /**
+     * Function for changing button text to specifified text
+     * @param button to be changed
+     * @param text text to be changed to
+     */
     public void setButtonText(int button, String text){
         if(button == 1){
             b1.setText(text);
@@ -109,23 +133,37 @@ public class TicTacGUI {
         }
     }
     
+    /**
+     * Function to set updateable status
+     */
     public void setCanUpdate(boolean set){
         canUpdate = set;
     }
 
+    /**
+     * Sets value of button
+     */
     public void setButtonPressed(int number){
         buttonPressed = number;
     }
-
+    /**
+     * Getter for button pressed
+     * @return button pressed
+     */
     public int getButtonPressed(){
         return buttonPressed;
     }
 
-
+    /**
+     * Function to return player name
+     */
     public String getPlayerName(){
         return playerName;
     }
 
+    /**
+     * Adds action listeners to all 9 buttons
+     */
     private void addButtonListeners(){
         b1.addActionListener(new ActionListener() {
             @Override
@@ -183,10 +221,17 @@ public class TicTacGUI {
             } });
     }
 
+    /**
+     * Updates the message in the message box textfield with input
+     */
     public void updateMessage(String input){
         this.message.setText(input);
     }
 
+    /**
+     * Sets sybmol texfield to player mark
+     * @param in mark
+     */
     public void updateMark(char in){
         this.symbol.setText(Character.toString(in));
     }
