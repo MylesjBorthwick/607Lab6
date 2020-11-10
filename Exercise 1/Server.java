@@ -6,10 +6,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+
 /**
  * Server class
  */
-
 
 public class Server {
 	
@@ -30,7 +31,10 @@ public class Server {
 		}
 		
 	}
-	
+	/**
+	 * Method to start server
+	 * Creates thread and runs pool
+	 */
 	public void runServer () {
 
 		while (true) {
@@ -40,7 +44,9 @@ public class Server {
 		}
 		
 	}
-
+	/**
+	 * Disconnects sockets
+	 */
 	private void disconnect() {
 
 		try {
@@ -52,6 +58,10 @@ public class Server {
 		}
 	}
 
+
+	/**
+	 * 
+	 */
 	private void connect() {
 		try {
 			this.theSocket = this.serverSocket.accept();
@@ -63,6 +73,11 @@ public class Server {
 
 	}
 	
+	/**
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main (String [] args) throws IOException{
 	
 			Server myServer = new Server(8099);
