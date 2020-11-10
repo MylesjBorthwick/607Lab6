@@ -134,20 +134,23 @@ public class TicTacGUI {
     }
     
     /**
-     * Function to set updateable status
+     * Function to set updatable status
+     * @param set the boolean of the status to set to
      */
     public void setCanUpdate(boolean set){
         canUpdate = set;
     }
 
     /**
-     * Sets value of button
+     * Sets value of button pressed, which is updated when canUpdate is true and a button is pressed by 
+     * the user
+     * @param number the number to set the button pressed index to
      */
     public void setButtonPressed(int number){
         buttonPressed = number;
     }
     /**
-     * Getter for button pressed
+     * Getter for button pressed index for the backend functionality
      * @return button pressed
      */
     public int getButtonPressed(){
@@ -156,6 +159,7 @@ public class TicTacGUI {
 
     /**
      * Function to return player name
+     * @return a string of the player's name (null if not set)
      */
     public String getPlayerName(){
         return playerName;
@@ -223,6 +227,7 @@ public class TicTacGUI {
 
     /**
      * Updates the message in the message box textfield with input
+     * @param string to set the message box to
      */
     public void updateMessage(String input){
         this.message.setText(input);

@@ -47,10 +47,10 @@ public class TicTacClient implements Constants {
 		}
 	}
 	/**
-	 * 
-	 * @param row
-	 * @param col
-	 * @return
+	 * helper method that will return the button label (one greater than in the coordinate array)
+	 * @param row the row on the tic tac toe game that will be looked up (0-2)
+	 * @param col the column on the tic tac toe game that will be looked up (0-2)
+	 * @return the button label (from 1-9) that matches the coordinate
 	 */
 	private int buttonCoordinateLookup(int row, int col) {
 		int lookup;
@@ -61,13 +61,16 @@ public class TicTacClient implements Constants {
 		}
 		return -1;
 	}
+	
 	/**
-	 * 
+	 * this private helper method populates the buttonCoordinates array with coordinates that correspond 
+	 * where the button is on the board. button 1 lines up with the upper left space, while button 2 is directly
+	 * below it (one row down), and so on. 
 	 */
 	private void populateButtonCoordinates() {
 		try {
-			buttonCoordinates[0][0] = 0;
-			buttonCoordinates[0][1] = 0;
+			buttonCoordinates[0][0] = 0; //the row index
+			buttonCoordinates[0][1] = 0; //the column index
 
 			buttonCoordinates[1][0] = 1;
 			buttonCoordinates[1][1] = 0;

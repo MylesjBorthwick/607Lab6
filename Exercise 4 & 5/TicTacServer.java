@@ -119,10 +119,9 @@ public class TicTacServer implements Constants{
 
 	/**
 	 * Driver function for server
-	 * @param args
-	 * @throws IOException
+	 * @param args external arguments passed on run (not used)
 	 */
-	public static void main (String [] args) throws IOException {
+	public static void main (String [] args) {
 	
 			TicTacServer myServer = new TicTacServer(8099); //same port as for client
 			myServer.runServer();
