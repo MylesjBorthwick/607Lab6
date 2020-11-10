@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+
 /**
  * Server class that allows clients to connect, accepting their sockets and
  *  placing them on their own threads of class palindrome, such that 
@@ -14,7 +16,6 @@ import java.util.concurrent.Executors;
  * @author Myles Borthwick
  * @author Ken Loughery
  */
-
 
 public class Server {
 	
